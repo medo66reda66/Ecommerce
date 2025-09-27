@@ -4,7 +4,7 @@ namespace Ecommerce.viwemodel
 {
     public class personVM
     {
-        public  list<Person> pepoles { get; set; }
+        public  List<Person> Pepoles { get; set; }
         public int totalpeople { get; set; }
     }
         

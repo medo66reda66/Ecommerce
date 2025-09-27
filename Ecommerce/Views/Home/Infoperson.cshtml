@@ -1,1 +1,15 @@
-﻿
+﻿@using Ecommerce.viwemodel
+@model personVM
+<ul>
+    <h1>Hello Page</h1>
+    @foreach(var item in Model.Pepoles)
+    {
+        <li>Id : @item.Id</li>
+        <li>fristname : @item.FirstName</li>
+        <li>lastname : @item.LastName</li>
+        <li>email :  @item.Email</li>
+        <li>Agr : @item.Age</li>
+        <br> 
+    }
+    <h3>totalpeople :@Model.totalpeople</h3>
+</ul>

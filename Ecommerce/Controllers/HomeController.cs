@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Controllers
 {
+   
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private ApplicationDBContext db = new ApplicationDBContext();
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -16,7 +17,8 @@ namespace Ecommerce.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var product= db.Products.AsEnumerable();
+            return View(product);
         }
 
         public IActionResult Privacy()
@@ -25,7 +27,7 @@ namespace Ecommerce.Controllers
         }
         public ViewResult Infoperson()
         {
-            List<Person> people = new List<Person>();
+             List<Person> people = new List<Person>();
             
                 people.AddRange( new()
                     { 
@@ -45,11 +47,11 @@ namespace Ecommerce.Controllers
             var pepolINDB = people.AsQueryable();
             var totalpeople = people.Count;
 
-            return View(new personVM
+             return View(new personVM
             {
-                pepoles = pepolINDB.ToList(),
+                 Pepoles = pepolINDB.ToList(),
 
-                totalpeople = totalpeople
+                 totalpeople = totalpeople
             });
         }
                 
