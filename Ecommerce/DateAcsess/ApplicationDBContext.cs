@@ -11,6 +11,8 @@ namespace Ecommerce.DateAcsess
         public DbSet<Products> Products { get; set; }
         public DbSet<ProductColors> ProductColors { get; set; }
         public DbSet<ProductSubimgs> ProductSubimgs { get; set; }
+        public object Categorys { get; internal set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

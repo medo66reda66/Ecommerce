@@ -1,0 +1,64 @@
+﻿
+    <div class="container">
+    @section Scripts{
+        @if (TempData["Notification"] is not null)
+        {
+            <script>
+                toaster.success('@TempData["Notification"]')
+            </script>
+
+        }
+    }
+        <div class="row mb-3 align-items-center my-3">
+            <div class="col-md-6">
+                <h2 class="display-6">All Brands</h2>
+            </div>
+            <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+                <a href="/admin/brand/create" class="btn btn-success">Create</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">img</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@item.Id</th>
+                            <td>@item.Name</td>
+                            <td><img src="~/image/@item.Img" ></td>
+                            @* <td>@item.Description</td> *@
+                             @if (item.Status)
+                             {
+                                 <td><span class="badge text-bg-success">Active</span></td>
+                             }
+                             else
+                             {
+                            <td><span class="badge text-bg-danger">Inactive</span></td>
+                             }
+                            <td>
+                                <a href="/Admin/Brand/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
+                                <a href="/Admin/Brand/Delete/@item.Id" type="button" class="btn btn-danger btn-delete">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
