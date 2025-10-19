@@ -1,5 +1,8 @@
-﻿namespace Ecommerce.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Ecommerce.Models
 {
+  
     public class ProductColors
     {
         public int ProductId { get; set; }

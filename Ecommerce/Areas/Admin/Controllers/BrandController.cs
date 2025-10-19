@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Ecommerce.viwemodel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Areas.Admin.Controllers
@@ -25,18 +26,28 @@ namespace Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new Brands());
+            return View(new createBrandVM() );
         }
         [HttpPost]
-        public IActionResult Create(Brands brand,IFormFile img)
+        public IActionResult Create(createBrandVM createBrandVM)
         {
-            if (img is not null && img.Length>0)
+            if (!ModelState.IsValid)
             {
-                var filename = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+                return View(createBrandVM);
+            }
+            Brands brand = new Brands()
+            {
+                Name = createBrandVM.Name,
+                Description = createBrandVM.Description,
+                Status = createBrandVM.Status,
+            };
+            if (createBrandVM.Img is not null && createBrandVM.Img.Length>0)
+            {
+                var filename = Guid.NewGuid().ToString() + Path.GetExtension(createBrandVM.Img.FileName);
                 var pathname = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image", filename);
                 using (var stream = System.IO.File.Create(pathname))
                 {
-                    img.CopyTo(stream);
+                    createBrandVM.Img.CopyTo(stream);
                 }
 
                 brand.Img = filename;
@@ -55,21 +66,39 @@ namespace Ecommerce.Areas.Admin.Controllers
             if (brand is null)
                 return NotFound();
 
-            return View(brand);
+            return View(new Editebrandvm()
+            {
+                Id = brand.Id,
+                Name = brand.Name,
+                Description = brand.Description,
+                Status = brand.Status,
+                Img = brand.Img
+            });
         }
         [HttpPost]
-        public IActionResult Edit(Brands brand,IFormFile? img)
+        public IActionResult Edit(Editebrandvm editebrandvm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(editebrandvm);
+            }
+            Brands brand = new Brands()
+            {
+                Id = editebrandvm.Id,
+                Name = editebrandvm.Name,
+                Description = editebrandvm.Description,
+                Status = editebrandvm.Status,
+            };
             var brandinDb = db.Brands.AsNoTracking().FirstOrDefault(e=>e.Id == brand.Id);
             if (brandinDb is null)
                 return NotFound();
-            if (img is not null && img.Length > 0)
+            if (editebrandvm.newImg is not null && editebrandvm.newImg.Length > 0)
             {
-                var filename = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+                var filename = Guid.NewGuid().ToString() + Path.GetExtension(editebrandvm.newImg.FileName);
                 var pathname = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image", filename);
                 using (var stream = System.IO.File.Create(pathname))
                 {
-                    img.CopyTo(stream);
+                    editebrandvm.newImg.CopyTo(stream);
                 }
                 var oldpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\image", brandinDb.Img);
                 System.IO.File.Delete(oldpath);

@@ -79,6 +79,9 @@ namespace Ecommerce.Migrations
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.HasKey("ProductId", "Color");
 
                     b.ToTable("ProductColors");
@@ -91,6 +94,9 @@ namespace Ecommerce.Migrations
 
                     b.Property<string>("Img")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.HasKey("ProductId", "Img");
 

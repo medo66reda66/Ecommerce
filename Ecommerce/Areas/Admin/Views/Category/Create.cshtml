@@ -9,14 +9,17 @@
     <div class="row my-3">
         <div class="col-12">
             <form method="post">
+                <div asp-validation-summary="All" class="text-danger" >
+                </div>
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" name="Name" >
+                    <input type="text" class="form-control" asp-for="Name">
+                    <span class="text-danger" asp-validation-for="@Model.Name"></span>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" placeholder="Leave a description here" style="height: 100px" name="Description"></textarea>
-                    <label for="description">You Description Here ...</label>
+                    <textarea class="form-control" placeholder="Leave a description here" asp-for="@Model.Description"></textarea>
+                    <label for="description">You Description Here ~.</label>
                 </div>
                 <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
@@ -30,3 +33,9 @@
         </div>
     </div>
 </div>
+
+        @section Scripts
+        {
+                <partial name="_ValidationScriptsPartial">
+        }
+    

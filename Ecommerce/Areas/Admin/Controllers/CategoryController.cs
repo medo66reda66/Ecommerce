@@ -1,6 +1,8 @@
 ﻿using Ecommerce.Models;
+using Ecommerce.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Ecommerce.Areas.Admin.Controllers
 {
@@ -8,10 +10,13 @@ namespace Ecommerce.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private ApplicationDBContext db = new ApplicationDBContext();
+        private CategoryRepository _db = new();
 
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var Categorys = db.Categores.AsNoTracking().AsQueryable();
+            var Categorys = db.Categores.AsQueryable();
+
             return View(Categorys.AsEnumerable());
         }
         [HttpGet]
@@ -20,40 +25,50 @@ namespace Ecommerce.Areas.Admin.Controllers
             return View(new Categores());
         }
         [HttpPost]
-        public IActionResult Create(Categores categores)
+        public async Task<IActionResult> Create(Categores categores,CancellationToken cancellationToken)
         {
-            db.Categores.Add(categores);
-            db.SaveChanges();
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(categores);
+            //}
+         
+            await _db.Add(categores, cancellationToken);
+            await _db.commitASync(cancellationToken);
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id,CancellationToken cancellationToken)
         {
-            var Categorys = db.Categores.FirstOrDefault(e=>e.Id==id);
+            var Categorys = await _db.GetoneAsync(e => e.Id == id,cancellationToken);
             if (Categorys is null)
             {
+                //ModelState.AddModelError(string.Empty, "Additinal Error");
                 return RedirectToAction("NOTfoundnwe", "Home");
             }
             return View(Categorys);
         }
         [HttpPost]
-        public IActionResult Edit(Categores categores)
+        public async Task<IActionResult> Edit(Categores categores ,CancellationToken cancellationToken)
         {
-            db.Categores.Update(categores);
-            db.SaveChanges();
+           
+            _db.Update(categores);
+            await _db.commitASync(cancellationToken);
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id,CancellationToken cancellationToken)
         {
-            var Categorys = db.Categores.FirstOrDefault(e => e.Id == id);
+            var Categorys = await _db.GetoneAsync( e=>e.Id == id, cancellationToken);
             if (Categorys is null)
             {
                 return RedirectToAction("NOTfoundnwe", "Home");
             }
-            db.Categores.Remove(Categorys);
-            db.SaveChanges();
+           
+            _db.Delete(Categorys);
+            await _db.commitASync(cancellationToken);
             return RedirectToAction(nameof(Index));
         }
     }
 }
+
+
 

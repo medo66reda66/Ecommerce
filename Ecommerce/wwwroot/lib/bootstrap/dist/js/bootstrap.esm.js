@@ -246,7 +246,7 @@ const defineJQueryPlugin = plugin => {
   });
 };
 const execute = (possibleCallback, args = [], defaultValue = possibleCallback) => {
-  return typeof possibleCallback === 'function' ? possibleCallback(...args) : defaultValue;
+  return typeof possibleCallback === 'function' ? possibleCallback(~.args) : defaultValue;
 };
 const executeAfterTransition = (callback, transitionElement, waitForTransition = true) => {
   if (!waitForTransition) {
@@ -311,8 +311,8 @@ const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed
  * Constants
  */
 
-const namespaceRegex = /[^.]*(?=\..*)\.|.*/;
-const stripNameRegex = /\..*/;
+const namespaceRegex = /[^.]*(?=\~*)\.|.*/;
+const stripNameRegex = /\~*/;
 const stripUidRegex = /::\d+$/;
 const eventRegistry = {}; // Events storage
 let uidEvent = 1;
@@ -614,10 +614,10 @@ class Config {
     const jsonConfig = isElement(element) ? Manipulator.getDataAttribute(element, 'config') : {}; // try to parse
 
     return {
-      ...this.constructor.Default,
-      ...(typeof jsonConfig === 'object' ? jsonConfig : {}),
-      ...(isElement(element) ? Manipulator.getDataAttributes(element) : {}),
-      ...(typeof config === 'object' ? config : {})
+      ~.this.constructor.Default,
+      ~.(typeof jsonConfig === 'object' ? jsonConfig : {}),
+      ~.(isElement(element) ? Manipulator.getDataAttributes(element) : {}),
+      ~.(typeof config === 'object' ? config : {})
     };
   }
   _typeCheckConfig(config, configTypes = this.constructor.DefaultType) {
@@ -730,13 +730,13 @@ const getSelector = element => {
 };
 const SelectorEngine = {
   find(selector, element = document.documentElement) {
-    return [].concat(...Element.prototype.querySelectorAll.call(element, selector));
+    return [].concat(~.Element.prototype.querySelectorAll.call(element, selector));
   },
   findOne(selector, element = document.documentElement) {
     return Element.prototype.querySelector.call(element, selector);
   },
   children(element, selector) {
-    return [].concat(...element.children).filter(child => child.matches(selector));
+    return [].concat(~.element.children).filter(child => child.matches(selector));
   },
   parents(element, selector) {
     const parents = [];
@@ -1793,7 +1793,7 @@ class Dropdown extends BaseComponent {
     // only needed because of broken event delegation on iOS
     // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
     if ('ontouchstart' in document.documentElement && !this._parent.closest(SELECTOR_NAVBAR_NAV)) {
-      for (const element of [].concat(...document.body.children)) {
+      for (const element of [].concat(~.document.body.children)) {
         EventHandler.on(element, 'mouseover', noop);
       }
     }
@@ -1835,7 +1835,7 @@ class Dropdown extends BaseComponent {
     // If this is a touch-enabled device we remove the extra
     // empty mouseover listeners we added for iOS support
     if ('ontouchstart' in document.documentElement) {
-      for (const element of [].concat(...document.body.children)) {
+      for (const element of [].concat(~.document.body.children)) {
         EventHandler.off(element, 'mouseover', noop);
       }
     }
@@ -1936,8 +1936,8 @@ class Dropdown extends BaseComponent {
       }];
     }
     return {
-      ...defaultBsPopperConfig,
-      ...execute(this._config.popperConfig, [defaultBsPopperConfig])
+      ~.defaultBsPopperConfig,
+      ~.execute(this._config.popperConfig, [defaultBsPopperConfig])
     };
   }
   _selectMenuItem({
@@ -2982,14 +2982,14 @@ function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
   }
   const domParser = new window.DOMParser();
   const createdDocument = domParser.parseFromString(unsafeHtml, 'text/html');
-  const elements = [].concat(...createdDocument.body.querySelectorAll('*'));
+  const elements = [].concat(~.createdDocument.body.querySelectorAll('*'));
   for (const element of elements) {
     const elementName = element.nodeName.toLowerCase();
     if (!Object.keys(allowList).includes(elementName)) {
       element.remove();
       continue;
     }
-    const attributeList = [].concat(...element.attributes);
+    const attributeList = [].concat(~.element.attributes);
     const allowedAttributes = [].concat(allowList['*'] || [], allowList[elementName] || []);
     for (const attribute of attributeList) {
       if (!allowedAttribute(attribute, allowedAttributes)) {
@@ -3068,8 +3068,8 @@ class TemplateFactory extends Config {
   changeContent(content) {
     this._checkContent(content);
     this._config.content = {
-      ...this._config.content,
-      ...content
+      ~.this._config.content,
+      ~.content
     };
     return this;
   }
@@ -3082,7 +3082,7 @@ class TemplateFactory extends Config {
     const template = templateWrapper.children[0];
     const extraClass = this._resolvePossibleFunction(this._config.extraClass);
     if (extraClass) {
-      template.classList.add(...extraClass.split(' '));
+      template.classList.add(~.extraClass.split(' '));
     }
     return template;
   }
@@ -3318,7 +3318,7 @@ class Tooltip extends BaseComponent {
     // only needed because of broken event delegation on iOS
     // https://www.quirksmode.org/blog/archives/2014/02/mouse_event_bub.html
     if ('ontouchstart' in document.documentElement) {
-      for (const element of [].concat(...document.body.children)) {
+      for (const element of [].concat(~.document.body.children)) {
         EventHandler.on(element, 'mouseover', noop);
       }
     }
@@ -3345,7 +3345,7 @@ class Tooltip extends BaseComponent {
     // If this is a touch-enabled device we remove the extra
     // empty mouseover listeners we added for iOS support
     if ('ontouchstart' in document.documentElement) {
-      for (const element of [].concat(...document.body.children)) {
+      for (const element of [].concat(~.document.body.children)) {
         EventHandler.off(element, 'mouseover', noop);
       }
     }
@@ -3411,7 +3411,7 @@ class Tooltip extends BaseComponent {
       this._templateFactory.changeContent(content);
     } else {
       this._templateFactory = new TemplateFactory({
-        ...this._config,
+        ~.this._config,
         // the `content` var has to be after `this._config`
         // to override config.content in case of popover
         content,
@@ -3494,8 +3494,8 @@ class Tooltip extends BaseComponent {
       }]
     };
     return {
-      ...defaultBsPopperConfig,
-      ...execute(this._config.popperConfig, [defaultBsPopperConfig])
+      ~.defaultBsPopperConfig,
+      ~.execute(this._config.popperConfig, [defaultBsPopperConfig])
     };
   }
   _setListeners() {
@@ -3577,8 +3577,8 @@ class Tooltip extends BaseComponent {
       }
     }
     config = {
-      ...dataAttributes,
-      ...(typeof config === 'object' && config ? config : {})
+      ~.dataAttributes,
+      ~.(typeof config === 'object' && config ? config : {})
     };
     config = this._mergeConfigObj(config);
     config = this._configAfterMerge(config);
@@ -3664,7 +3664,7 @@ const NAME$3 = 'popover';
 const SELECTOR_TITLE = '.popover-header';
 const SELECTOR_CONTENT = '.popover-body';
 const Default$2 = {
-  ...Tooltip.Default,
+  ~.Tooltip.Default,
   content: '',
   offset: [0, 8],
   placement: 'right',
@@ -3672,7 +3672,7 @@ const Default$2 = {
   trigger: 'click'
 };
 const DefaultType$2 = {
-  ...Tooltip.DefaultType,
+  ~.Tooltip.DefaultType,
   content: '(null|string|element|function)'
 };
 

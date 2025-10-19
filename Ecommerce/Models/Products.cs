@@ -12,9 +12,11 @@
         public double Rate { get; set; }
         public int Quantity { get; set; }
         public int CategoryId { get; set; }
-        public Categores Category { get; set; }=null!;
+        public Categores Category { get; set; }
         public int BrandId { get; set; }
-        public Brands Brand { get; set; }=null!;
+        public Brands Brand { get; set; }
+        public List<ProductColors> ProductColors { get; set; }
+
 
     }
 }
