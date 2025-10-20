@@ -10,7 +10,7 @@ namespace Ecommerce.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private ApplicationDBContext db = new ApplicationDBContext();
-        private CategoryRepository _db = new();
+        Repository<Categores> _db = new();
 
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
@@ -32,14 +32,14 @@ namespace Ecommerce.Areas.Admin.Controllers
             //    return View(categores);
             //}
          
-            await _db.Add(categores, cancellationToken);
+            await _db.AddAsync(categores, cancellationToken);
             await _db.commitASync(cancellationToken);
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int id,CancellationToken cancellationToken)
         {
-            var Categorys = await _db.GetoneAsync(e => e.Id == id,cancellationToken);
+            var Categorys = await _db.GetoneAsync(e => e.Id == id, cancellationToken: cancellationToken);
             if (Categorys is null)
             {
                 //ModelState.AddModelError(string.Empty, "Additinal Error");
@@ -57,7 +57,7 @@ namespace Ecommerce.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Delete(int id,CancellationToken cancellationToken)
         {
-            var Categorys = await _db.GetoneAsync( e=>e.Id == id, cancellationToken);
+            var Categorys = await _db.GetoneAsync(e => e.Id == id, cancellationToken:cancellationToken);
             if (Categorys is null)
             {
                 return RedirectToAction("NOTfoundnwe", "Home");
