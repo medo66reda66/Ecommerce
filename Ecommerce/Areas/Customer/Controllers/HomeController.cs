@@ -10,12 +10,14 @@ namespace Ecommerce.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ApplicationDBContext db = new ApplicationDBContext();
-        public HomeController(ILogger<HomeController> logger)
+        private ApplicationDBContext db;//= new();
+        public HomeController(ILogger<HomeController> logger, ApplicationDBContext db)
         {
             _logger = logger;
+            this.db = db;
         }
 
+     
         public IActionResult Index(filterdataVM filterdataVM)
         {
             var product= db.Products.Include(e=>e.Category).Include(e=>e.Brand).AsQueryable();

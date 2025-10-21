@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Models;
 using Ecommerce.Repository;
+using Ecommerce.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -9,9 +10,18 @@ namespace Ecommerce.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
-        private ApplicationDBContext db = new ApplicationDBContext();
-        Repository<Categores> _db = new();
+        private ApplicationDBContext db;// = new ApplicationDBContext();
+        private readonly  IRepository<Categores> _db ;
 
+        public CategoryController( ApplicationDBContext db)
+        {
+            this.db = db;
+        }
+
+        public CategoryController(IRepository<Categores> db)
+        {
+            _db = db;
+        }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {

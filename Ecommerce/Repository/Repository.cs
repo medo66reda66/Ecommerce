@@ -1,4 +1,4 @@
-﻿
+﻿using Ecommerce.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -6,18 +6,23 @@ using System.Threading.Tasks;
 namespace Ecommerce.Repository
 {
     
-    public class Repository<T> where T : class
+    public class Repository<T> :IRepository<T> where T : class
     {
-        ApplicationDBContext _context = new ApplicationDBContext();
+        ApplicationDBContext _context;//= new ApplicationDBContext();
         private DbSet<T> _db;
+        public Repository(ApplicationDBContext context)
+        {
+            _context = context;
+        }
         public Repository()
         {
             _db = _context.Set<T>();
+            
         }
-        public async Task AddAsync(T entity,CancellationToken cancellationToken=default)
+        public async Task<T> AddAsync(T entity,CancellationToken cancellationToken=default)
         { 
-          await _db.AddAsync(entity,cancellationToken);
-
+          await _db.AddAsync(entity,cancellationToken:cancellationToken);
+            return entity;
         }
         public void Update(T entity)
         {

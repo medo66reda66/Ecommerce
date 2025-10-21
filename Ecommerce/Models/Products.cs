@@ -1,4 +1,6 @@
-﻿namespace Ecommerce.Models
+﻿using Ecommerce.viwemodel;
+
+namespace Ecommerce.Models
 {
     public class Products
     {
@@ -16,6 +18,7 @@
         public int BrandId { get; set; }
         public Brands Brand { get; set; }
         public List<ProductColors> ProductColors { get; set; }
+        public List<ProductSubimgs> ProductSubimgs { get; set; }
 
 
     }

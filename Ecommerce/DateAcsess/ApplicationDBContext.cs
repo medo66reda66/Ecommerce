@@ -6,6 +6,10 @@ namespace Ecommerce.DateAcsess
 {
     public class ApplicationDBContext : DbContext
     {
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContext): base(dbContext) 
+        {
+
+        }
         public DbSet<Categores> Categores { get; set; }
         public DbSet<Brands> Brands { get; set; }
         public DbSet<Products> Products { get; set; }
@@ -13,11 +17,15 @@ namespace Ecommerce.DateAcsess
         public DbSet<ProductSubimgs> ProductSubimgs { get; set; }
         public object Categorys { get; internal set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=.;Initial catalog=ECommerce1; Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
-        }
+        //public ApplicationDBContext()
+        //{
+
+        //}
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseSqlServer("Data Source=.;Initial catalog=ECommerce1; Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProuductColerEntitytypeconfigration).Assembly);

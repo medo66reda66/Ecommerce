@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Repository;
+using Ecommerce.Repository.IRepository;
 using Ecommerce.viwemodel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +12,20 @@ namespace Ecommerce.Areas.Admin.Controllers
     public class BrandController : Controller
     {
 
-        //ApplicationDBContext db = new ApplicationDBContext();
-        Repository<Brands> _db = new Repository<Brands>();
+        ApplicationDBContext db; //= new ApplicationDBContext();
+        private readonly IRepository<Brands> _db; //= new Repository<Brands>();
+
+        public BrandController(IRepository<Brands> db, ApplicationDBContext dbs)
+        {
+            this.db = dbs;
+            _db = db;
+            
+        }
+
+
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var brands = await _db.GetAllAsync(cancellationToken: cancellationToken, tracked: false);
+            var brands = await _db.GetAllAsync(cancellationToken: cancellationToken);
 
             return View(brands.Select(e=>new
             {
