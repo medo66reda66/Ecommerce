@@ -13,12 +13,9 @@ namespace Ecommerce.Repository
         public Repository(ApplicationDBContext context)
         {
             _context = context;
-        }
-        public Repository()
-        {
             _db = _context.Set<T>();
-            
         }
+    
         public async Task<T> AddAsync(T entity,CancellationToken cancellationToken=default)
         { 
           await _db.AddAsync(entity,cancellationToken:cancellationToken);

@@ -1,10 +1,11 @@
 ﻿
 using Ecommerce.DateAcsess.Entitytypeconficration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.DateAcsess
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContext): base(dbContext) 
         {
@@ -15,7 +16,7 @@ namespace Ecommerce.DateAcsess
         public DbSet<Products> Products { get; set; }
         public DbSet<ProductColors> ProductColors { get; set; }
         public DbSet<ProductSubimgs> ProductSubimgs { get; set; }
-        public object Categorys { get; internal set; }
+     
 
         //public ApplicationDBContext()
         //{

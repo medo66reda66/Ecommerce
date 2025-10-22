@@ -13,14 +13,10 @@ namespace Ecommerce.Areas.Admin.Controllers
         private ApplicationDBContext db;// = new ApplicationDBContext();
         private readonly  IRepository<Categores> _db ;
 
-        public CategoryController( ApplicationDBContext db)
+        public CategoryController( ApplicationDBContext db, IRepository<Categores> dbcategory)
         {
             this.db = db;
-        }
-
-        public CategoryController(IRepository<Categores> db)
-        {
-            _db = db;
+            _db = dbcategory;
         }
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)

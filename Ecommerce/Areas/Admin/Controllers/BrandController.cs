@@ -15,13 +15,12 @@ namespace Ecommerce.Areas.Admin.Controllers
         ApplicationDBContext db; //= new ApplicationDBContext();
         private readonly IRepository<Brands> _db; //= new Repository<Brands>();
 
-        public BrandController(IRepository<Brands> db, ApplicationDBContext dbs)
+        public BrandController(IRepository<Brands> dbbrand, ApplicationDBContext db)
         {
-            this.db = dbs;
-            _db = db;
+            _db = dbbrand;
+            this.db = db;
             
         }
-
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
@@ -76,7 +75,7 @@ namespace Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id,CancellationToken cancellationToken)
         {
-            var brand = await _db.GetoneAsync(e => e.Id == id, cancellationToken: cancellationToken);
+            var brand = await _db.GetoneAsync(e => e.Id == id,tracked:false, cancellationToken: cancellationToken);
             if (brand is null)
                 return NotFound();
 
