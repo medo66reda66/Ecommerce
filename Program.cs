@@ -1,10 +1,13 @@
+using Ecommerce.Config;
 using Ecommerce.Repository;
 using Ecommerce.Repository.IRepository;
 using Ecommerce.Utilities;
+using Ecommerce.Utilities.DBinitializer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace Ecommerce
@@ -25,7 +28,7 @@ namespace Ecommerce
 
 
             });
-            builder.Services.AddIdentity<Applicationuser, IdentityRole>(Option =>
+            builder.Services.AddIdentity<Appliccationusr, IdentityRole>(Option =>
             {
                 Option.Password.RequiredLength = 6;
                 Option.Password.RequireLowercase = false;
@@ -36,6 +39,7 @@ namespace Ecommerce
 
             }).AddEntityFrameworkStores<ApplicationDBContext>()
             .AddDefaultTokenProviders();
+
             builder.Services.AddTransient<IEmailSender,EmailSender>();
             builder.Services.AddScoped<IRepository<Categores>, Repository<Categores>>();
             builder.Services.AddScoped<IRepository<Brands>, Repository<Brands>>();
@@ -44,9 +48,14 @@ namespace Ecommerce
             builder.Services.AddScoped<IRepository<ApplicationUserOtp>, Repository<ApplicationUserOtp>>();
             builder.Services.AddScoped<productIRepositry,producrRepository>();
             builder.Services.AddScoped<productcolerIRepositry,productcolerRepository>();
-          
+            builder.Services.AddScoped<IBDinitializer, DBinitializer>();
             
+            builder.Services.RegisterMapsterConfig();
+
             var app = builder.Build();
+            var scope = app.Services.CreateScope();
+            var service = scope.ServiceProvider.GetService<IBDinitializer>();
+            service!.Initializ();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

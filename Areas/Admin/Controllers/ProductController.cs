@@ -1,7 +1,9 @@
 ﻿using Ecommerce.Repository;
 using Ecommerce.Repository.IRepository;
+using Ecommerce.Utilities;
 using Ecommerce.ViewModel;
 using Ecommerce.viwemodel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 namespace Ecommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE},{DS.EMPLOYEE_ROLE}")]
     public class ProductController : Controller
     {
 
@@ -156,6 +159,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(int id,CancellationToken cancellationToken)
         {
             var product = await _producrRepository.GetoneAsync(b => b.Id == id,includes: [b => b.ProductSubimgs, c => c.ProductColors],tracked:false, cancellationToken:cancellationToken);
@@ -172,6 +176,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             });
         }
         [HttpPost]
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(Products product,IFormFile? img, string[] Colors ,CancellationToken cancellationToken)
         {
             var productinDb = await _producrRepository.GetoneAsync(e => e.Id == product.Id, includes: [c=>c.ProductColors],tracked:false ,cancellationToken : cancellationToken);
@@ -220,6 +225,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Delete(int id ,CancellationToken cancellationToken)
         {
             var product = await _producrRepository.GetoneAsync(b => b.Id == id, includes: [b => b.ProductSubimgs, c => c.ProductColors], tracked: false, cancellationToken: cancellationToken);
@@ -231,7 +237,7 @@ namespace Ecommerce.Areas.Admin.Controllers
                 System.IO.File.Delete(oldpath);
 
 
-            _producrRepository.Update(product);
+            _producrRepository.Delete(product);
             await _producrRepository.commitASync(cancellationToken: cancellationToken);
 
             TempData["Notification"] = "Product Deleted Successfully";

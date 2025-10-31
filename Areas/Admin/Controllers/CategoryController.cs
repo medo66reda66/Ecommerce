@@ -1,6 +1,8 @@
 ﻿using Ecommerce.Models;
 using Ecommerce.Repository;
 using Ecommerce.Repository.IRepository;
+using Ecommerce.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ using System.Threading.Tasks;
 namespace Ecommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE},{DS.EMPLOYEE_ROLE}")]
     public class CategoryController : Controller
     {
         private ApplicationDBContext db;// = new ApplicationDBContext();
@@ -44,6 +47,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(int id,CancellationToken cancellationToken)
         {
             var Categorys = await _db.GetoneAsync(e => e.Id == id, cancellationToken: cancellationToken);
@@ -55,6 +59,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             return View(Categorys);
         }
         [HttpPost]
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(Categores categores ,CancellationToken cancellationToken)
         {
            
@@ -63,6 +68,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             TempData["Natification"] = "Edit category sucsess";
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Delete(int id,CancellationToken cancellationToken)
         {
             var Categorys = await _db.GetoneAsync(e => e.Id == id, cancellationToken:cancellationToken);

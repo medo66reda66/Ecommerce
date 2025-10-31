@@ -8,7 +8,7 @@
         public DateTime CreateAt { get; set; }
         public bool Isvalid { get; set; }
         public string Applicationuserid { get; set; }
-        public Applicationuser Applicationuser { get; set; }
+        public Appliccationusr Applicationuser { get; set; }
 
     }
 }

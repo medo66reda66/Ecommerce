@@ -16,12 +16,12 @@ namespace Ecommerce.Areas.Identity.Controllers
     [Area("Identity")]
     public class AcountController : Controller
     {
-        private readonly Microsoft.AspNetCore.Identity.UserManager<Applicationuser> _userManager;
-        private readonly SignInManager<Applicationuser> _signInManager;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<Appliccationusr> _userManager;
+        private readonly SignInManager<Appliccationusr> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly IRepository<ApplicationUserOtp> _applicationUserOtpRepository;
 
-        public AcountController(Microsoft.AspNetCore.Identity.UserManager<Applicationuser> userManager , SignInManager<Applicationuser> signInManager,
+        public AcountController(Microsoft.AspNetCore.Identity.UserManager<Appliccationusr> userManager , SignInManager<Appliccationusr> signInManager,
             IEmailSender emailSender, IRepository<ApplicationUserOtp> ApplicationUserOtpRepository)
         {
             _userManager = userManager;
@@ -29,7 +29,13 @@ namespace Ecommerce.Areas.Identity.Controllers
             _emailSender = emailSender;
             _applicationUserOtpRepository = ApplicationUserOtpRepository;
         }
+        
 
+        public async Task<IActionResult> Logout()
+        {
+           await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
+        }
         public IActionResult Register()
         {
             return View();
@@ -40,7 +46,7 @@ namespace Ecommerce.Areas.Identity.Controllers
             if (!ModelState.IsValid)
                 return View(registerVM);
 
-            var user = new Applicationuser
+            var user = new Appliccationusr
             {
                 firstname = registerVM.Firstname,
                 lastname = registerVM.Lastname,

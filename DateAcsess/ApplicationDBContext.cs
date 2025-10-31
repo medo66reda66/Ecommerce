@@ -6,7 +6,7 @@ using Ecommerce.viwemodel;
 
 namespace Ecommerce.DateAcsess
 {
-    public class ApplicationDBContext : IdentityDbContext<Applicationuser>
+    public class ApplicationDBContext : IdentityDbContext<Appliccationusr>
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContext): base(dbContext) 
         {
@@ -34,8 +34,8 @@ namespace Ecommerce.DateAcsess
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProuductColerEntitytypeconfigration).Assembly);
             base.OnModelCreating(modelBuilder);
         }
-        public DbSet<Ecommerce.viwemodel.VolidateOtpVM> VolidateOtpVM { get; set; } = default!;
-        public DbSet<Ecommerce.viwemodel.NewPasswordVM> NewPasswordVM { get; set; } = default!;
+        //public DbSet<Ecommerce.viwemodel.VolidateOtpVM> VolidateOtpVM { get; set; } = default!;
+        //public DbSet<Ecommerce.viwemodel.NewPasswordVM> NewPasswordVM { get; set; } = default!;
         //public DbSet<Ecommerce.viwemodel.RegisterVM> RegisterVM { get; set; } = default!;
         //public DbSet<Ecommerce.viwemodel.LoginVM> LoginVM { get; set; } = default!;
         //public DbSet<Ecommerce.viwemodel.ResendEmailConfirmVM> ResendEmailConfirmVM { get; set; } = default!;

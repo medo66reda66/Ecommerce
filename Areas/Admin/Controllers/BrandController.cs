@@ -1,6 +1,8 @@
 ﻿using Ecommerce.Repository;
 using Ecommerce.Repository.IRepository;
+using Ecommerce.Utilities;
 using Ecommerce.viwemodel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 namespace Ecommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE},{DS.EMPLOYEE_ROLE}")]
     public class BrandController : Controller
     {
 
@@ -73,6 +76,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(int id,CancellationToken cancellationToken)
         {
             var brand = await _db.GetoneAsync(e => e.Id == id,tracked:false, cancellationToken: cancellationToken);
@@ -89,6 +93,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             });
         }
         [HttpPost]
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Edit(Editebrandvm editebrandvm, CancellationToken cancellationToken )
         {
             if (!ModelState.IsValid)
@@ -127,6 +132,7 @@ namespace Ecommerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [Authorize(Roles = $"{DS.SUPER_ADMIN_ROLE},{DS.ADMIN_ROLE}")]
         public async Task<IActionResult> Delete(int id , CancellationToken cancellationToken)
         {
             var brand = await _db.GetoneAsync(e => e.Id == id ,cancellationToken:cancellationToken);

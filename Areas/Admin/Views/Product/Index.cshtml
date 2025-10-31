@@ -1,14 +1,6 @@
-﻿@model IEnumerable<Products>
+﻿@using Ecommerce.Utilities
+@model IEnumerable<Products>
     <div class="container">
-    @section Scripts{
-        @if (TempData["Notification"] is not null)
-        {
-            <script>
-                toaster.success('@TempData["Notification"]')
-            </script>
-
-        }
-    }
     <section class="py-3 filter-bar">
         <div class="container">
             <div class="row" style="background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;">
@@ -139,10 +131,16 @@
                              {
                             <td><span class="badge text-bg-danger">Inactive</span></td>
                              }
-                            <td>
-                                <a href="/Admin/Product/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
-                                <a href="/Admin/Product/Delete/@item.Id" type="button" class="btn btn-danger btn-delete">Delete</a>
-                            </td>
+                            @if (User.IsInRole(DS.SUPER_ADMIN_ROLE) || User.IsInRole(DS.SUPER_ADMIN_ROLE))
+                            {
+                                <td>
+                                    <a href="/Admin/Product/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
+                                    <a href="/Admin/Product/Delete/@item.Id" class="btn btn-danger btn-delete">Delete</a>
+                                </td>
+                            }else
+                            {
+                                <td>NO Action!</td>
+                            }
                         </tr>
                     }
                 </tbody>
@@ -156,14 +154,14 @@
          @if(@TempData["sucess-Notification"] is not null)
          {
                 <script>
-                toastr.success['@TempData["sucess-Notification"]'];
-        </script>
+                    toastr.success['@TempData["sucess-Notification"]'];
+                </script>
         }
-    else if (@TempData["error-Notification"] is not null)
+         else if (@TempData["error-Notification"] is not null)
         {
-        <script>
-            toastr.error['@TempData["error-Notification"]'];
-        </script>
+                <script>
+                    toastr.error['@TempData["error-Notification"]'];
+                </script>
         }
     }
 

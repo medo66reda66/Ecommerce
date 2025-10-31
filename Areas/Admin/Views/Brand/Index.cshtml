@@ -1,4 +1,5 @@
-﻿
+﻿@using Ecommerce.Utilities
+
     <div class="container">
     @section Scripts{
         @if (TempData["Notification"] is not null)
@@ -48,10 +49,17 @@
                              {
                             <td><span class="badge text-bg-danger">Inactive</span></td>
                              }
-                            <td>
-                                <a href="/Admin/Brand/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
-                                <a href="/Admin/Brand/Delete/@item.Id" type="button" class="btn btn-danger btn-delete">Delete</a>
-                            </td>
+                            @if (User.IsInRole(DS.SUPER_ADMIN_ROLE) || User.IsInRole(DS.SUPER_ADMIN_ROLE))
+                            {
+                                <td>
+                                    <a href="/Admin/Brand/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
+                                    <a href="/Admin/Brand/Delete/@item.Id" class="btn btn-danger btn-delete">Delete</a>
+                                </td>
+                            }
+                            else
+                            {
+                               <td>NO Action!</td>
+                            }
                         </tr>
                     }
                 </tbody>
